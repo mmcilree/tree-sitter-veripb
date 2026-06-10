@@ -58,7 +58,7 @@ function if you use lazy.nvim):
 local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 parser_config.veripb = {
   install_info = {
-    url = "https://github.com/mcilree/tree-sitter-veripb",
+    url = "https://github.com/mmcilree/veripb-treesitter",
     files = { "src/parser.c" },
     branch = "main",
   },
@@ -100,7 +100,7 @@ require("nvim-treesitter.configs").setup({
     local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
     parser_config.veripb = {
       install_info = {
-        url = "https://github.com/mcilree/tree-sitter-veripb",
+        url = "https://github.com/mmcilree/veripb-treesitter",
         files = { "src/parser.c" },
         branch = "main",
       },
@@ -115,7 +115,7 @@ require("nvim-treesitter.configs").setup({
 },
 -- Detect .pbp files (can live anywhere in your config)
 {
-  "mcilree/tree-sitter-veripb",
+  "mmcilree/veripb-treesitter",
   init = function()
     vim.filetype.add({ extension = { pbp = "veripb" } })
   end,
