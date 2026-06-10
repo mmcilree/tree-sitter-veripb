@@ -1,2 +1,5 @@
 node_modules/
 build/
+# From the VeriPB repo — not part of this grammar
+docs/
+tests/

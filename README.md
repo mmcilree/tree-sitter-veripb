@@ -1,7 +1,13 @@
 # tree-sitter-veripb
 
+> **AI assistance disclosure:** This grammar was developed with substantial
+> assistance from [Claude Code](https://claude.ai/claude-code) (Anthropic,
+> claude-sonnet-4-6). The grammar design, implementation, and documentation
+> were produced collaboratively. The author reviewed and directed the work
+> throughout; all commits are attributed accordingly.
+
 A [tree-sitter](https://tree-sitter.github.io/tree-sitter/) grammar for the
-[VeriPB](https://gitlab.com/MIAOresearch/software/VeriPB) pseudo-Boolean proof format.
+[VeriPB](veripb.org) pseudo-Boolean proof format.
 
 Supports **VeriPB 3.0** (`.pbp` files).
 
@@ -58,7 +64,7 @@ function if you use lazy.nvim):
 local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 parser_config.veripb = {
   install_info = {
-    url = "https://github.com/mmcilree/veripb-treesitter",
+    url = "https://github.com/mmcilree/tree-sitter-veripb",
     files = { "src/parser.c" },
     branch = "main",
   },
@@ -100,7 +106,7 @@ require("nvim-treesitter.configs").setup({
     local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
     parser_config.veripb = {
       install_info = {
-        url = "https://github.com/mmcilree/veripb-treesitter",
+        url = "https://github.com/mmcilree/tree-sitter-veripb",
         files = { "src/parser.c" },
         branch = "main",
       },
@@ -115,7 +121,7 @@ require("nvim-treesitter.configs").setup({
 },
 -- Detect .pbp files (can live anywhere in your config)
 {
-  "mmcilree/veripb-treesitter",
+  "mmcilree/tree-sitter-veripb",
   init = function()
     vim.filetype.add({ extension = { pbp = "veripb" } })
   end,
@@ -210,15 +216,21 @@ tree-sitter generate
 tree-sitter test
 ```
 
-To test against the VeriPB proof corpus:
+To test against the VeriPB proof corpus, clone the
+[VeriPB repository](https://gitlab.com/MIAOresearch/software/VeriPB) and point
+the parser at its correct instances:
 
 ```sh
-# All files should parse with zero ERROR nodes
-for f in tests/instances/**/*.pbp; do
+git clone https://gitlab.com/MIAOresearch/software/VeriPB
+# All correct instances should parse with zero ERROR nodes
+for f in VeriPB/tests/instances/correct/**/*.pbp; do
   tree-sitter parse --quiet "$f" || echo "FAIL: $f"
 done
 ```
 
 ## Grammar reference
 
-The VeriPB 3.0 grammar specification is in [`docs/grammar.tex`](docs/grammar.tex).
+The VeriPB 3.0 grammar specification is maintained in the VeriPB repository:
+
+- **EBNF grammar:** [`docs/grammar.tex`](https://gitlab.com/MIAOresearch/software/VeriPB/-/blob/main/docs/grammar.tex) (and rendered [PDF](https://gitlab.com/api/v4/projects/70013030/jobs/artifacts/main/raw/docs/grammar.pdf?job=build-grammar-doc&search_recent_successful_pipelines=true))
+- **Test corpus:** [`tests/instances/correct/`](https://gitlab.com/MIAOresearch/software/VeriPB/-/tree/main/tests/instances/correct/version3)
