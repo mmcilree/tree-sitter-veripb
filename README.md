@@ -55,77 +55,35 @@ common path) or the native tree-sitter support built into Neovim 0.9+.
 
 ### With nvim-treesitter
 
-#### Step 1 — register the parser
-
-Add this **before** your nvim-treesitter `setup()` call (or inside the `config`
-function if you use lazy.nvim):
-
+1. Add the following snippet in a `User TSUpdate` autocommand:
 ```lua
-local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-parser_config.veripb = {
-  install_info = {
-    url = "https://github.com/mmcilree/tree-sitter-veripb",
-    files = { "src/parser.c" },
-    branch = "main",
-  },
-  filetype = "veripb",
-}
-```
-
-#### Step 2 — detect `.pbp` files as `veripb`
-
-```lua
-vim.filetype.add({ extension = { pbp = "veripb" } })
-```
-
-#### Step 3 — install the parser
-
-```
-:TSInstall veripb
-```
-
-#### Step 4 — enable highlights (if not already on)
-
-Ensure `highlight` is enabled in your nvim-treesitter config:
-
-```lua
-require("nvim-treesitter.configs").setup({
-  highlight = { enable = true },
-  -- ...
+-- Register as a parser available for download
+vim.api.nvim_create_autocmd("User", {
+	pattern = "TSUpdate",
+	callback = function()
+		require("nvim-treesitter.parsers").veripb = {
+			install_info = {
+				url = "https://github.com/mmcilree/tree-sitter-veripb",
+				queries = "queries",
+			},
+		}
+	end,
 })
 ```
 
-#### lazy.nvim example
+2. Start `nvim` and `:TSInstall veripb`
+
+3. Modify your config to use `veripb` filetype e.g.
 
 ```lua
-{
-  "nvim-treesitter/nvim-treesitter",
-  build = ":TSUpdate",
-  config = function()
-    -- Register the parser before setup
-    local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-    parser_config.veripb = {
-      install_info = {
-        url = "https://github.com/mmcilree/tree-sitter-veripb",
-        files = { "src/parser.c" },
-        branch = "main",
-      },
-      filetype = "veripb",
-    }
-
-    require("nvim-treesitter.configs").setup({
-      ensure_installed = { "veripb" },
-      highlight = { enable = true },
-    })
-  end,
-},
--- Detect .pbp files (can live anywhere in your config)
-{
-  "mmcilree/tree-sitter-veripb",
-  init = function()
-    vim.filetype.add({ extension = { pbp = "veripb" } })
-  end,
-},
+vim.filetype.add({ extension = { pbp = "veripb" } })
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "veripb" },
+	callback = function()
+		vim.treesitter.start()
+		vim.opt.commentstring = "% %s"
+	end,
+})
 ```
 
 ### Without nvim-treesitter (native Neovim 0.9+)
@@ -134,7 +92,7 @@ Neovim 0.9+ has built-in tree-sitter support that doesn't require the
 nvim-treesitter plugin. This approach gives you syntax highlighting by placing
 the compiled parser and query files in standard locations.
 
-#### Step 1 — compile the parser
+1. Compile the parser
 
 ```sh
 # From the repository root
@@ -143,7 +101,7 @@ cc -shared -fPIC -o veripb.so src/parser.c
 # cc -shared -fPIC -undefined dynamic_lookup -o veripb.so src/parser.c
 ```
 
-#### Step 2 — install the compiled parser
+2. Install the compiled parser
 
 ```sh
 # Create the parser directory if it doesn't exist
@@ -157,32 +115,13 @@ Or from Lua (e.g. in a setup script):
 local dest = vim.fn.stdpath("data") .. "/site/parser/veripb.so"
 ```
 
-#### Step 3 — install the query files
+3. Install the query files
 
 ```sh
 mkdir -p ~/.config/nvim/queries/veripb
 cp queries/highlights.scm ~/.config/nvim/queries/veripb/highlights.scm
 ```
-
-#### Step 4 — register the filetype and parser
-
-Add to your `init.lua`:
-
-```lua
--- Detect .pbp files
-vim.filetype.add({ extension = { pbp = "veripb" } })
-
--- Register the language with Neovim's tree-sitter integration
-vim.treesitter.language.register("veripb", "veripb")
-```
-
-#### Step 5 — enable highlighting in your ftplugin
-
-Create `~/.config/nvim/ftplugin/veripb.lua`:
-
-```lua
-vim.treesitter.start()
-```
+4. `veripb` filetype can then be enabled by modifying config as desired (see step 3. above).
 
 ### Highlight groups
 
