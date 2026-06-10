@@ -36,14 +36,14 @@ Rule categories supported:
 | Category | Rules |
 |---|---|
 | Cutting planes | `pol` |
-| Propagation | `rup` |
-| Strengthening | `red`, `dom`, `pbc` |
+| Reverse Unit Propagation | `rup` |
+| Strengthening/Proof by Contradiction| `red`, `dom`, `pbc` |
 | Deletion | `del`, `delc`, `deld` |
 | Objective | `obju`, `obji`, `eobj` |
 | Solutions | `sol`, `soli`, `solx` |
 | Orders | `def_order`, `load_order`, `eord_def`, `eord_loaded` |
 | Levels | `setlvl`, `wiplvl` |
-| Checks | `e`, `i`, `ia`, `f`, `a`, `is_deleted`, `fail` |
+| Convenience Checks | `e`, `i`, `ia`, `f`, `a`, `is_deleted`, `fail` |
 | Timing | `start_time`, `end_time` |
 | Misc | `core`, `strengthening_to_core` |
 
