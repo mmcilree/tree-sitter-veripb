@@ -1,0 +1,30 @@
+{
+  "name": "tree-sitter-veripb",
+  "version": "0.1.0",
+  "description": "Tree-sitter grammar for the VeriPB pseudo-Boolean proof format",
+  "main": "bindings/node",
+  "keywords": [
+    "tree-sitter",
+    "veripb",
+    "pseudo-boolean",
+    "parser"
+  ],
+  "dependencies": {
+    "node-addon-api": "^7.1.0",
+    "node-gyp-build": "^4.8.0"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": "^0.24.0"
+  },
+  "scripts": {
+    "build": "tree-sitter generate && node-gyp build",
+    "test": "tree-sitter test"
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.veripb",
+      "file-types": ["pbp"],
+      "highlights": "queries/highlights.scm"
+    }
+  ]
+}

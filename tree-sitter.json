@@ -1,0 +1,13 @@
+{
+  "grammars": [
+    {
+      "name": "veripb",
+      "scope": "source.veripb",
+      "file-types": ["pbp"],
+      "highlights": "queries/highlights.scm"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0"
+  }
+}

@@ -1,0 +1,2443 @@
+[
+  {
+    "type": "a_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "constraint",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "assignment",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "aux_variable",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "literal",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "aux_variables",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "aux_variable",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "bound",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "signed_integer",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "coefficient",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "signed_integer",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "conclusion_stmt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "conclusion_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "conclusion_type",
+    "named": true,
+    "fields": {
+      "lower": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "bound",
+            "named": true
+          }
+        ]
+      },
+      "upper": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "bound",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "constraint_id",
+          "named": true
+        },
+        {
+          "type": "positive_integer",
+          "named": true
+        },
+        {
+          "type": "solution",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "constraint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "coefficient",
+          "named": true
+        },
+        {
+          "type": "reification",
+          "named": true
+        },
+        {
+          "type": "relational_operator",
+          "named": true
+        },
+        {
+          "type": "sum",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "constraint_id",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "label",
+          "named": true
+        },
+        {
+          "type": "positive_integer",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "constraint_ids",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "constraint_id",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "constraint_line",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "constraint",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "constraint_lines",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "constraint_line",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "core_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "core_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "core_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "constraint_id",
+          "named": true
+        },
+        {
+          "type": "constraint_ids",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "def_order_rule",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "order_definition",
+          "named": true
+        },
+        {
+          "type": "order_reflexivity",
+          "named": true
+        },
+        {
+          "type": "order_specification",
+          "named": true
+        },
+        {
+          "type": "order_transitivity",
+          "named": true
+        },
+        {
+          "type": "order_vars",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "del_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "delete_type",
+          "named": true
+        },
+        {
+          "type": "witness_subproof_args",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "delc_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "constraint_ids",
+          "named": true
+        },
+        {
+          "type": "witness_subproof_args",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "deld_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "constraint_ids",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "delete_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "constraint",
+          "named": true
+        },
+        {
+          "type": "constraint_id",
+          "named": true
+        },
+        {
+          "type": "constraint_ids",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "dom_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "constraint",
+          "named": true
+        },
+        {
+          "type": "witness_subproof_args",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "e_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "constraint",
+          "named": true
+        },
+        {
+          "type": "constraint_id",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "end_stmt",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "end_time_rule",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "eobj_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "objective",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "eord_def_rule",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "eord_def_spec",
+          "named": true
+        },
+        {
+          "type": "order_definition",
+          "named": true
+        },
+        {
+          "type": "order_vars",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "eord_def_spec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "constraint_lines",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "eord_loaded_rule",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "literals",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "epreserved_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "f_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "unsigned_integer",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "footer",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "conclusion_stmt",
+          "named": true
+        },
+        {
+          "type": "end_stmt",
+          "named": true
+        },
+        {
+          "type": "output_stmt",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "i_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "constraint",
+          "named": true
+        },
+        {
+          "type": "constraint_id",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ia_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "constraint",
+          "named": true
+        },
+        {
+          "type": "constraint_id",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "is_deleted_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "constraint",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "labeled_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "a_rule",
+          "named": true
+        },
+        {
+          "type": "dom_rule",
+          "named": true
+        },
+        {
+          "type": "e_rule",
+          "named": true
+        },
+        {
+          "type": "i_rule",
+          "named": true
+        },
+        {
+          "type": "ia_rule",
+          "named": true
+        },
+        {
+          "type": "obji_rule",
+          "named": true
+        },
+        {
+          "type": "pbc_rule",
+          "named": true
+        },
+        {
+          "type": "pol_rule",
+          "named": true
+        },
+        {
+          "type": "preserved_add_rule",
+          "named": true
+        },
+        {
+          "type": "preserved_rm_rule",
+          "named": true
+        },
+        {
+          "type": "red_rule",
+          "named": true
+        },
+        {
+          "type": "rup_rule",
+          "named": true
+        },
+        {
+          "type": "soli_rule",
+          "named": true
+        },
+        {
+          "type": "solx_rule",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "literal",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "aux_variable",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "literals",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "literal",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "load_order_rule",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "literals",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "objective",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "coefficient",
+          "named": true
+        },
+        {
+          "type": "sum",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "obji_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "signed_integer",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "obju_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "objective",
+          "named": true
+        },
+        {
+          "type": "subproof_arg",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "order_definition",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "constraint_lines",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "order_proof",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "subproof_lines",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "order_reflexivity",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "order_proof",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "order_specification",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "specification_lines",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "order_transitivity",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "order_proof",
+          "named": true
+        },
+        {
+          "type": "order_transitivity_vars",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "order_transitivity_vars",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "aux_variables",
+          "named": true
+        },
+        {
+          "type": "variables",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "order_vars",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "aux_variables",
+          "named": true
+        },
+        {
+          "type": "variables",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "output_guarantee",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "output_stmt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "output_guarantee",
+          "named": true
+        },
+        {
+          "type": "output_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "output_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "constraint_ids",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "pbc_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "constraint",
+          "named": true
+        },
+        {
+          "type": "subproof_arg",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "pol_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "constraint_id",
+          "named": true
+        },
+        {
+          "type": "literal",
+          "named": true
+        },
+        {
+          "type": "positive_integer",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "preserved_add_rule",
+    "named": true,
+    "fields": {
+      "variable": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "constraint",
+          "named": true
+        },
+        {
+          "type": "subproof_arg",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "preserved_rm_rule",
+    "named": true,
+    "fields": {
+      "variable": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "constraint",
+          "named": true
+        },
+        {
+          "type": "subproof_arg",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "proof",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "footer",
+          "named": true
+        },
+        {
+          "type": "header",
+          "named": true
+        },
+        {
+          "type": "proof_lines",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "proof_line",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "label",
+          "named": true
+        },
+        {
+          "type": "labeled_rule",
+          "named": true
+        },
+        {
+          "type": "top_rule",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "proof_lines",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "proof_line",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "proofgoal",
+    "named": true,
+    "fields": {
+      "end_id": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "proofgoal_id",
+            "named": true
+          }
+        ]
+      },
+      "id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "proofgoal_id",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "constraint_id",
+          "named": true
+        },
+        {
+          "type": "proofgoal_lines",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "proofgoal_id",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "constraint_id",
+          "named": true
+        },
+        {
+          "type": "positive_integer",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "proofgoal_line",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "label",
+          "named": true
+        },
+        {
+          "type": "proofgoal_output_rule",
+          "named": true
+        },
+        {
+          "type": "proofgoal_rule",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "proofgoal_lines",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "proofgoal_line",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "proofgoal_output_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "a_rule",
+          "named": true
+        },
+        {
+          "type": "e_rule",
+          "named": true
+        },
+        {
+          "type": "i_rule",
+          "named": true
+        },
+        {
+          "type": "ia_rule",
+          "named": true
+        },
+        {
+          "type": "pbc_rule",
+          "named": true
+        },
+        {
+          "type": "pol_rule",
+          "named": true
+        },
+        {
+          "type": "rup_rule",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "proofgoal_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "a_rule",
+          "named": true
+        },
+        {
+          "type": "e_rule",
+          "named": true
+        },
+        {
+          "type": "end_time_rule",
+          "named": true
+        },
+        {
+          "type": "eobj_rule",
+          "named": true
+        },
+        {
+          "type": "eord_def_rule",
+          "named": true
+        },
+        {
+          "type": "eord_loaded_rule",
+          "named": true
+        },
+        {
+          "type": "f_rule",
+          "named": true
+        },
+        {
+          "type": "fail_rule",
+          "named": true
+        },
+        {
+          "type": "i_rule",
+          "named": true
+        },
+        {
+          "type": "ia_rule",
+          "named": true
+        },
+        {
+          "type": "is_deleted_rule",
+          "named": true
+        },
+        {
+          "type": "pbc_rule",
+          "named": true
+        },
+        {
+          "type": "pol_rule",
+          "named": true
+        },
+        {
+          "type": "rup_rule",
+          "named": true
+        },
+        {
+          "type": "start_time_rule",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "red_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "constraint",
+          "named": true
+        },
+        {
+          "type": "witness_subproof_args",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "reification",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "literal",
+          "named": true
+        },
+        {
+          "type": "literals",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "relational_operator",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "rup_hint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "constraint_id",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "rup_hints",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "rup_hint",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "rup_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "constraint",
+          "named": true
+        },
+        {
+          "type": "rup_hints",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "scope",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "scope_lines",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "scope_lines",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "proofgoal",
+          "named": true
+        },
+        {
+          "type": "proofgoal_line",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "setlvl_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "unsigned_integer",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "sol_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "signed_integer",
+          "named": true
+        },
+        {
+          "type": "solution",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "soli_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "signed_integer",
+          "named": true
+        },
+        {
+          "type": "solution",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "solution",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "literals",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "solx_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "solution",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "source_file",
+    "named": true,
+    "root": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "proof",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "specification_line",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "label",
+          "named": true
+        },
+        {
+          "type": "labeled_rule",
+          "named": true
+        },
+        {
+          "type": "specification_rule",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "specification_lines",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "specification_line",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "specification_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "a_rule",
+          "named": true
+        },
+        {
+          "type": "e_rule",
+          "named": true
+        },
+        {
+          "type": "end_time_rule",
+          "named": true
+        },
+        {
+          "type": "eobj_rule",
+          "named": true
+        },
+        {
+          "type": "eord_def_rule",
+          "named": true
+        },
+        {
+          "type": "eord_loaded_rule",
+          "named": true
+        },
+        {
+          "type": "f_rule",
+          "named": true
+        },
+        {
+          "type": "fail_rule",
+          "named": true
+        },
+        {
+          "type": "i_rule",
+          "named": true
+        },
+        {
+          "type": "ia_rule",
+          "named": true
+        },
+        {
+          "type": "is_deleted_rule",
+          "named": true
+        },
+        {
+          "type": "pbc_rule",
+          "named": true
+        },
+        {
+          "type": "pol_rule",
+          "named": true
+        },
+        {
+          "type": "red_rule",
+          "named": true
+        },
+        {
+          "type": "rup_rule",
+          "named": true
+        },
+        {
+          "type": "start_time_rule",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "start_time_rule",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "str_to_core_rule",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "subproof",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "subproof_lines",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "subproof_arg",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "constraint_id",
+          "named": true
+        },
+        {
+          "type": "subproof",
+          "named": true
+        },
+        {
+          "type": "subproof_end_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "subproof_end_name",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "subproof_lines",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "proofgoal",
+          "named": true
+        },
+        {
+          "type": "proofgoal_line",
+          "named": true
+        },
+        {
+          "type": "scope",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "substitution",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "assignment",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "sum",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "weighted_term",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "top_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "a_rule",
+          "named": true
+        },
+        {
+          "type": "core_rule",
+          "named": true
+        },
+        {
+          "type": "def_order_rule",
+          "named": true
+        },
+        {
+          "type": "del_rule",
+          "named": true
+        },
+        {
+          "type": "delc_rule",
+          "named": true
+        },
+        {
+          "type": "deld_rule",
+          "named": true
+        },
+        {
+          "type": "dom_rule",
+          "named": true
+        },
+        {
+          "type": "e_rule",
+          "named": true
+        },
+        {
+          "type": "end_time_rule",
+          "named": true
+        },
+        {
+          "type": "eobj_rule",
+          "named": true
+        },
+        {
+          "type": "eord_def_rule",
+          "named": true
+        },
+        {
+          "type": "eord_loaded_rule",
+          "named": true
+        },
+        {
+          "type": "epreserved_rule",
+          "named": true
+        },
+        {
+          "type": "f_rule",
+          "named": true
+        },
+        {
+          "type": "fail_rule",
+          "named": true
+        },
+        {
+          "type": "i_rule",
+          "named": true
+        },
+        {
+          "type": "ia_rule",
+          "named": true
+        },
+        {
+          "type": "is_deleted_rule",
+          "named": true
+        },
+        {
+          "type": "load_order_rule",
+          "named": true
+        },
+        {
+          "type": "obji_rule",
+          "named": true
+        },
+        {
+          "type": "obju_rule",
+          "named": true
+        },
+        {
+          "type": "pbc_rule",
+          "named": true
+        },
+        {
+          "type": "pol_rule",
+          "named": true
+        },
+        {
+          "type": "preserved_add_rule",
+          "named": true
+        },
+        {
+          "type": "preserved_rm_rule",
+          "named": true
+        },
+        {
+          "type": "red_rule",
+          "named": true
+        },
+        {
+          "type": "rup_rule",
+          "named": true
+        },
+        {
+          "type": "setlvl_rule",
+          "named": true
+        },
+        {
+          "type": "sol_rule",
+          "named": true
+        },
+        {
+          "type": "soli_rule",
+          "named": true
+        },
+        {
+          "type": "solx_rule",
+          "named": true
+        },
+        {
+          "type": "start_time_rule",
+          "named": true
+        },
+        {
+          "type": "str_to_core_rule",
+          "named": true
+        },
+        {
+          "type": "wiplvl_rule",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "variables",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "weighted_term",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "coefficient",
+          "named": true
+        },
+        {
+          "type": "literal",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "wiplvl_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "unsigned_integer",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "witness_subproof_args",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "constraint_id",
+          "named": true
+        },
+        {
+          "type": "subproof",
+          "named": true
+        },
+        {
+          "type": "subproof_end_name",
+          "named": true
+        },
+        {
+          "type": "substitution",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "#",
+    "named": false
+  },
+  {
+    "type": "*",
+    "named": false
+  },
+  {
+    "type": "+",
+    "named": false
+  },
+  {
+    "type": "-",
+    "named": false
+  },
+  {
+    "type": "->",
+    "named": false
+  },
+  {
+    "type": "0",
+    "named": false
+  },
+  {
+    "type": "1",
+    "named": false
+  },
+  {
+    "type": ":",
+    "named": false
+  },
+  {
+    "type": ";",
+    "named": false
+  },
+  {
+    "type": "<=",
+    "named": false
+  },
+  {
+    "type": "<==",
+    "named": false
+  },
+  {
+    "type": "==>",
+    "named": false
+  },
+  {
+    "type": ">=",
+    "named": false
+  },
+  {
+    "type": "BOUNDS",
+    "named": false
+  },
+  {
+    "type": "DERIVABLE",
+    "named": false
+  },
+  {
+    "type": "ENUMERATION_COMPLETE",
+    "named": false
+  },
+  {
+    "type": "ENUMERATION_PARTIAL",
+    "named": false
+  },
+  {
+    "type": "EQUIENUMERABLE",
+    "named": false
+  },
+  {
+    "type": "EQUIOPTIMAL",
+    "named": false
+  },
+  {
+    "type": "EQUISATISFIABLE",
+    "named": false
+  },
+  {
+    "type": "FILE",
+    "named": false
+  },
+  {
+    "type": "IMPLICIT",
+    "named": false
+  },
+  {
+    "type": "INF",
+    "named": false
+  },
+  {
+    "type": "NONE",
+    "named": false
+  },
+  {
+    "type": "PERMUTATION",
+    "named": false
+  },
+  {
+    "type": "SAT",
+    "named": false
+  },
+  {
+    "type": "UNSAT",
+    "named": false
+  },
+  {
+    "type": "a",
+    "named": false
+  },
+  {
+    "type": "aux",
+    "named": false
+  },
+  {
+    "type": "aux_variable",
+    "named": true
+  },
+  {
+    "type": "c",
+    "named": false
+  },
+  {
+    "type": "comment",
+    "named": true,
+    "extra": true
+  },
+  {
+    "type": "conclusion",
+    "named": false
+  },
+  {
+    "type": "core",
+    "named": false
+  },
+  {
+    "type": "d",
+    "named": false
+  },
+  {
+    "type": "def",
+    "named": false
+  },
+  {
+    "type": "def_order",
+    "named": false
+  },
+  {
+    "type": "del",
+    "named": false
+  },
+  {
+    "type": "delc",
+    "named": false
+  },
+  {
+    "type": "deld",
+    "named": false
+  },
+  {
+    "type": "diff",
+    "named": false
+  },
+  {
+    "type": "dom",
+    "named": false
+  },
+  {
+    "type": "e",
+    "named": false
+  },
+  {
+    "type": "end",
+    "named": false
+  },
+  {
+    "type": "end_time",
+    "named": false
+  },
+  {
+    "type": "eobj",
+    "named": false
+  },
+  {
+    "type": "eord_def",
+    "named": false
+  },
+  {
+    "type": "eord_loaded",
+    "named": false
+  },
+  {
+    "type": "epreserved",
+    "named": false
+  },
+  {
+    "type": "f",
+    "named": false
+  },
+  {
+    "type": "fail_rule",
+    "named": true
+  },
+  {
+    "type": "fresh_aux_1",
+    "named": false
+  },
+  {
+    "type": "fresh_aux_2",
+    "named": false
+  },
+  {
+    "type": "fresh_right",
+    "named": false
+  },
+  {
+    "type": "geq",
+    "named": false
+  },
+  {
+    "type": "header",
+    "named": true
+  },
+  {
+    "type": "i",
+    "named": false
+  },
+  {
+    "type": "ia",
+    "named": false
+  },
+  {
+    "type": "id",
+    "named": false
+  },
+  {
+    "type": "identifier",
+    "named": true
+  },
+  {
+    "type": "is_deleted",
+    "named": false
+  },
+  {
+    "type": "label",
+    "named": true
+  },
+  {
+    "type": "left",
+    "named": false
+  },
+  {
+    "type": "leq",
+    "named": false
+  },
+  {
+    "type": "load_order",
+    "named": false
+  },
+  {
+    "type": "m",
+    "named": false
+  },
+  {
+    "type": "n",
+    "named": false
+  },
+  {
+    "type": "new",
+    "named": false
+  },
+  {
+    "type": "obji",
+    "named": false
+  },
+  {
+    "type": "obju",
+    "named": false
+  },
+  {
+    "type": "off",
+    "named": false
+  },
+  {
+    "type": "on",
+    "named": false
+  },
+  {
+    "type": "output",
+    "named": false
+  },
+  {
+    "type": "pbc",
+    "named": false
+  },
+  {
+    "type": "pol",
+    "named": false
+  },
+  {
+    "type": "positive_integer",
+    "named": true
+  },
+  {
+    "type": "preserved_add",
+    "named": false
+  },
+  {
+    "type": "preserved_rm",
+    "named": false
+  },
+  {
+    "type": "proof",
+    "named": false
+  },
+  {
+    "type": "proofgoal",
+    "named": false
+  },
+  {
+    "type": "pseudo-Boolean",
+    "named": false
+  },
+  {
+    "type": "qed",
+    "named": false
+  },
+  {
+    "type": "range",
+    "named": false
+  },
+  {
+    "type": "red",
+    "named": false
+  },
+  {
+    "type": "reflexivity",
+    "named": false
+  },
+  {
+    "type": "right",
+    "named": false
+  },
+  {
+    "type": "rup",
+    "named": false
+  },
+  {
+    "type": "s",
+    "named": false
+  },
+  {
+    "type": "scope",
+    "named": false
+  },
+  {
+    "type": "setlvl",
+    "named": false
+  },
+  {
+    "type": "signed_integer",
+    "named": true
+  },
+  {
+    "type": "sol",
+    "named": false
+  },
+  {
+    "type": "soli",
+    "named": false
+  },
+  {
+    "type": "solx",
+    "named": false
+  },
+  {
+    "type": "spec",
+    "named": false
+  },
+  {
+    "type": "start_time",
+    "named": false
+  },
+  {
+    "type": "strengthening_to_core",
+    "named": false
+  },
+  {
+    "type": "subproof",
+    "named": false
+  },
+  {
+    "type": "transitivity",
+    "named": false
+  },
+  {
+    "type": "unsigned_integer",
+    "named": true
+  },
+  {
+    "type": "vars",
+    "named": false
+  },
+  {
+    "type": "w",
+    "named": false
+  },
+  {
+    "type": "wiplvl",
+    "named": false
+  },
+  {
+    "type": "~",
+    "named": false
+  }
+]
