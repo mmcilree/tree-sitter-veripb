@@ -1,0 +1,320 @@
+================================================================================
+Empty proof (NONE/NONE)
+================================================================================
+
+pseudo-Boolean proof version 3.0
+f 1;
+output NONE;
+conclusion NONE;
+end pseudo-Boolean proof;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (proof
+    (header)
+    (proof_lines
+      (proof_line
+        (top_rule
+          (f_rule
+            (unsigned_integer)))))
+    (footer
+      (output_stmt)
+      (conclusion_stmt
+        (conclusion_type))
+      (end_stmt))))
+
+================================================================================
+rup — basic propagation
+================================================================================
+
+pseudo-Boolean proof version 3.0
+rup 1 x1 >= 1 ;
+output NONE;
+conclusion NONE;
+end pseudo-Boolean proof;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (proof
+    (header)
+    (proof_lines
+      (proof_line
+        (top_rule
+          (rup_rule
+            (constraint
+              (sum
+                (weighted_term
+                  (coefficient (signed_integer))
+                  (literal (identifier))))
+              (relational_operator)
+              (coefficient (signed_integer)))))))
+    (footer
+      (output_stmt)
+      (conclusion_stmt (conclusion_type))
+      (end_stmt))))
+
+================================================================================
+pol — reverse Polish notation
+================================================================================
+
+pseudo-Boolean proof version 3.0
+f 2;
+pol 1 2 +;
+output NONE;
+conclusion NONE;
+end pseudo-Boolean proof;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (proof
+    (header)
+    (proof_lines
+      (proof_line
+        (top_rule (f_rule (unsigned_integer))))
+      (proof_line
+        (top_rule
+          (pol_rule
+            (constraint_id (positive_integer))
+            (constraint_id (positive_integer))))))
+    (footer
+      (output_stmt)
+      (conclusion_stmt (conclusion_type))
+      (end_stmt))))
+
+================================================================================
+pol — scalar multiplication with 0
+================================================================================
+
+pseudo-Boolean proof version 3.0
+pol x1 0 *;
+output NONE;
+conclusion NONE;
+end pseudo-Boolean proof;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (proof
+    (header)
+    (proof_lines
+      (proof_line
+        (top_rule
+          (pol_rule
+            (literal (identifier))))))
+    (footer
+      (output_stmt)
+      (conclusion_stmt (conclusion_type))
+      (end_stmt))))
+
+================================================================================
+pol — weakening
+================================================================================
+
+pseudo-Boolean proof version 3.0
+f 2;
+pol 1 x1 w;
+output NONE;
+conclusion NONE;
+end pseudo-Boolean proof;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (proof
+    (header)
+    (proof_lines
+      (proof_line
+        (top_rule (f_rule (unsigned_integer))))
+      (proof_line
+        (top_rule
+          (pol_rule
+            (constraint_id (positive_integer))
+            (literal (identifier))))))
+    (footer
+      (output_stmt)
+      (conclusion_stmt (conclusion_type))
+      (end_stmt))))
+
+================================================================================
+red — without witness
+================================================================================
+
+pseudo-Boolean proof version 3.0
+f 1;
+red 1 x1 1 x2 >= 1 ;
+output NONE;
+conclusion NONE;
+end pseudo-Boolean proof;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (proof
+    (header)
+    (proof_lines
+      (proof_line
+        (top_rule (f_rule (unsigned_integer))))
+      (proof_line
+        (top_rule
+          (red_rule
+            (constraint
+              (sum
+                (weighted_term (coefficient (signed_integer)) (literal (identifier)))
+                (weighted_term (coefficient (signed_integer)) (literal (identifier))))
+              (relational_operator)
+              (coefficient (signed_integer)))))))
+    (footer
+      (output_stmt)
+      (conclusion_stmt (conclusion_type))
+      (end_stmt))))
+
+================================================================================
+red — with witness
+================================================================================
+
+pseudo-Boolean proof version 3.0
+f 3;
+red 1 x1 >= 1 : x1 0;
+output NONE;
+conclusion NONE;
+end pseudo-Boolean proof;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (proof
+    (header)
+    (proof_lines
+      (proof_line
+        (top_rule (f_rule (unsigned_integer))))
+      (proof_line
+        (top_rule
+          (red_rule
+            (constraint
+              (sum (weighted_term (coefficient (signed_integer)) (literal (identifier))))
+              (relational_operator)
+              (coefficient (signed_integer)))
+            (witness_subproof_args
+              (substitution
+                (assignment (identifier))))))))
+    (footer
+      (output_stmt)
+      (conclusion_stmt (conclusion_type))
+      (end_stmt))))
+
+================================================================================
+comment
+================================================================================
+
+pseudo-Boolean proof version 3.0
+% a comment on its own line
+f 1;
+output NONE;
+conclusion NONE;
+end pseudo-Boolean proof;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (proof
+    (header)
+    (comment)
+    (proof_lines
+      (proof_line
+        (top_rule (f_rule (unsigned_integer)))))
+    (footer
+      (output_stmt)
+      (conclusion_stmt (conclusion_type))
+      (end_stmt))))
+
+================================================================================
+label on a proof line
+================================================================================
+
+pseudo-Boolean proof version 3.0
+f 2;
+@myLabel pol 1 2 +;
+output NONE;
+conclusion NONE;
+end pseudo-Boolean proof;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (proof
+    (header)
+    (proof_lines
+      (proof_line
+        (top_rule (f_rule (unsigned_integer))))
+      (proof_line
+        (label)
+        (labeled_rule
+          (pol_rule
+            (constraint_id (positive_integer))
+            (constraint_id (positive_integer))))))
+    (footer
+      (output_stmt)
+      (conclusion_stmt (conclusion_type))
+      (end_stmt))))
+
+================================================================================
+conclusion UNSAT with hint
+================================================================================
+
+pseudo-Boolean proof version 3.0
+f 1;
+rup >= 1 ;
+output NONE;
+conclusion UNSAT : -1;
+end pseudo-Boolean proof;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (proof
+    (header)
+    (proof_lines
+      (proof_line (top_rule (f_rule (unsigned_integer))))
+      (proof_line
+        (top_rule
+          (rup_rule
+            (constraint (relational_operator) (coefficient (signed_integer)))))))
+    (footer
+      (output_stmt)
+      (conclusion_stmt
+        (conclusion_type
+          (constraint_id)))
+      (end_stmt))))
+
+================================================================================
+del rule — id form
+================================================================================
+
+pseudo-Boolean proof version 3.0
+f 3;
+del id 1 2;
+output NONE;
+conclusion NONE;
+end pseudo-Boolean proof;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (proof
+    (header)
+    (proof_lines
+      (proof_line (top_rule (f_rule (unsigned_integer))))
+      (proof_line
+        (top_rule
+          (del_rule
+            (delete_type
+              (constraint_ids
+                (constraint_id (positive_integer))
+                (constraint_id (positive_integer))))))))
+    (footer
+      (output_stmt)
+      (conclusion_stmt (conclusion_type))
+      (end_stmt))))
