@@ -25,6 +25,12 @@
       "scope": "source.veripb",
       "file-types": ["pbp"],
       "highlights": "queries/highlights.scm"
+    },
+    {
+      "scope": "source.opb",
+      "path": "opb",
+      "file-types": ["opb"],
+      "highlights": "opb/queries/highlights.scm"
     }
   ]
 }

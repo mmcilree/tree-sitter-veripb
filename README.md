@@ -9,7 +9,10 @@
 A [tree-sitter](https://tree-sitter.github.io/tree-sitter/) grammar for the
 [VeriPB](veripb.org) pseudo-Boolean proof format.
 
-Supports **VeriPB 3.0** (`.pbp` files).
+Supports **VeriPB 3.0**:
+- `.pbp` proof files (root grammar)
+- `.opb` input formula files in VeriPB's XPB (extended pseudo-Boolean) dialect
+  (`opb/` subgrammar)
 
 ## Features
 

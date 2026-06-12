@@ -5,6 +5,13 @@
       "scope": "source.veripb",
       "file-types": ["pbp"],
       "highlights": "queries/highlights.scm"
+    },
+    {
+      "name": "opb",
+      "scope": "source.opb",
+      "path": "opb",
+      "file-types": ["opb"],
+      "highlights": "opb/queries/highlights.scm"
     }
   ],
   "metadata": {

@@ -1,0 +1,238 @@
+================================================================================
+Single unlabelled constraint
+================================================================================
+
+* #variable= 3 #constraint= 1
+1 x1 1 x2 1 x3 >= 1 ;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (comment)
+  (constraint_unlabelled
+    (sum
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier))))
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier))))
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier)))))
+    (xpb_relational_operator)
+    (coefficient (signed_integer))))
+
+================================================================================
+Minimisation objective
+================================================================================
+
+* objective example
+min: 1 ~x1 1 ~x2 1 ~x3 ;
+1 ~x1 1 ~x2 >= 1 ;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (comment)
+  (objective
+    (objective_type)
+    (sum
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier))))
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier))))
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier))))))
+  (constraint_unlabelled
+    (sum
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier))))
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier)))))
+    (xpb_relational_operator)
+    (coefficient (signed_integer))))
+
+================================================================================
+Maximisation objective
+================================================================================
+
+max: 2 x1 2 x2 2 x3 ;
+1 ~x1 1 ~x2 >= 1 ;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (objective
+    (objective_type)
+    (sum
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier))))
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier))))
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier))))))
+  (constraint_unlabelled
+    (sum
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier))))
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier)))))
+    (xpb_relational_operator)
+    (coefficient (signed_integer))))
+
+================================================================================
+Objective with trailing constant
+================================================================================
+
+min: +1 aa -2 bb +3 ;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (objective
+    (objective_type)
+    (sum
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier))))
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier)))))
+    (coefficient (signed_integer))))
+
+================================================================================
+Empty objective (bare constant)
+================================================================================
+
+min: 0 ;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (objective
+    (objective_type)
+    (coefficient (signed_integer))))
+
+================================================================================
+Equality constraint
+================================================================================
+
+2 x1 +1 x2 +1 x3 = 2 ;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (constraint_unlabelled
+    (sum
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier))))
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier))))
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier)))))
+    (xpb_relational_operator)
+    (coefficient (signed_integer))))
+
+================================================================================
+Less-or-equal constraint
+================================================================================
+
+1 ~x1 2 x2 3 ~x3 4 x4 <= 5 ;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (constraint_unlabelled
+    (sum
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier))))
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier))))
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier))))
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier)))))
+    (xpb_relational_operator)
+    (coefficient (signed_integer))))
+
+================================================================================
+Labelled constraint
+================================================================================
+
+@first^[1] 2 x1 +1 x2 +1 x3 >= 2 ;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (constraint_labelled
+    (label)
+    (sum
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier))))
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier))))
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier)))))
+    (relational_operator)
+    (coefficient (signed_integer))))
+
+================================================================================
+Empty sum (RHS-only) constraint
+================================================================================
+
+>= 1 ;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (constraint_unlabelled
+    (xpb_relational_operator)
+    (coefficient (signed_integer))))
+
+================================================================================
+Preserved directive
+================================================================================
+
+* #variable= 4 #constraint= 4
+preserved: x1 x3 ;
+1 x1 +1 x2 >= 1 ;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (comment)
+  (preserved_directive
+    (variable (identifier))
+    (variable (identifier)))
+  (constraint_unlabelled
+    (sum
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier))))
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier)))))
+    (xpb_relational_operator)
+    (coefficient (signed_integer))))
+
+================================================================================
+Comment line
+================================================================================
+
+* a comment on its own
+1 x1 >= 1 ;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (comment)
+  (constraint_unlabelled
+    (sum
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier)))))
+    (xpb_relational_operator)
+    (coefficient (signed_integer))))
+
+================================================================================
+Right-implication reification (==>)
+================================================================================
+
+z1 z2 ~z3 ==> +1 x1 +2 x2 >= 2 ;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (constraint_unlabelled
+    (reification
+      (literal (variable (identifier)))
+      (literal (variable (identifier)))
+      (literal (variable (identifier))))
+    (sum
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier))))
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier)))))
+    (xpb_relational_operator)
+    (coefficient (signed_integer))))
+
+================================================================================
+Left-implication reification (<==)
+================================================================================
+
+z1 <== +1 x1 +2 x2 >= 2 ;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (constraint_unlabelled
+    (reification
+      (literal (variable (identifier))))
+    (sum
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier))))
+      (weighted_term (coefficient (signed_integer)) (literal (variable (identifier)))))
+    (xpb_relational_operator)
+    (coefficient (signed_integer))))
