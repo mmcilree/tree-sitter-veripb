@@ -57,12 +57,30 @@
  *        sub-blocks close with `end`, not `qed`
  *      - Substitution arrows accept `->` and Unicode `→`
  *
- * 9. V2 COMMENT REGEX: `*` is the pol multiplication operator AND the v2 comment prefix.
- *    We rely on the empirical observation (verified against the corpus) that `* ` (asterisk
- *    + whitespace) is NEVER followed by a digit, `+`, `-`, `*`, `@`, or `~` in non-comment
- *    contexts. The comment regex requires `*<ws><non-{digit/op/@/~}>` so the pol operator
- *    cannot be misread. This is a heuristic — an external scanner would be more rigorous
- *    but adds complexity; this regex parses every file in the v2 corpus correctly.
+ * 9. V2 COMMENT — INTENT VS IMPLEMENTATION: v2 comments are line comments —
+ *    only a `*` that is the first non-whitespace character on a line should be
+ *    a comment; a `*` mid-line is the pol multiplication operator.
+ *
+ *    The ideal implementation is an external scanner that checks the lexer's
+ *    column position. We tried this (src/scanner.c) and the scanner logic
+ *    itself is correct, but tree-sitter 0.24's interaction between extras and
+ *    externals at EOF caused every file with a trailing newline to error.
+ *
+ *    The fallback used here is a regex whose character class is designed to
+ *    only fire on real comment lines:
+ *
+ *        \*[ \t]+[^\r\n0-9+\-*@~ \t][^\r\n]*
+ *
+ *    `*`, mandatory whitespace, then *exactly one* character that is not a
+ *    digit, sign, asterisk, label, tilde, or whitespace. In a pol body, the
+ *    character after `<int> *` is always one of those excluded categories
+ *    (next operand, next operator, or further whitespace), so the regex can't
+ *    lock onto a multiplication site. Every comment in the v2 + v3 corpora
+ *    starts with a letter or `(`, both of which the class admits.
+ *
+ *    Caveat: a hand-crafted line containing mid-line `* <letter>...` would
+ *    misparse as a comment. In the corpora that never happens — but the
+ *    user's intent ("strict line comment") is approximated, not enforced.
  */
 
 module.exports = grammar({
@@ -835,12 +853,15 @@ module.exports = grammar({
 
     comment: $ => /%[^\n\r]*/,
 
-    // v2 comment: '*' followed by whitespace and a non-operand character. The
-    // exclusion list (digit, sign, asterisk, label, tilde, AND whitespace) prevents
-    // collision with the pol multiplication operator (see design decision 9).
-    // Whitespace is excluded from the discriminator so that `*  -2 +` (pol body
-    // with extra spaces) cannot be misread as a comment. Verified safe against
-    // every file in the v2 and v3 corpora.
+    // v2 comment: a `*`, then mandatory whitespace, then a character that is
+    // *not* a digit, sign, asterisk, label, tilde, or whitespace. The exclusion
+    // class is what makes this approximate the user's intended "only at the
+    // start of a line" rule: every character that legally follows a pol-body
+    // `*` (operands, operators, more whitespace) is excluded, so the regex
+    // cannot lock onto a multiplication site. Every v2 corpus comment begins
+    // with a letter or `(`, both of which the class admits. See design
+    // decision 9 for why an external scanner — the ideal solution — proved
+    // infeasible under tree-sitter 0.24's extras-at-EOF behaviour.
     comment_v2: $ => /\*[ \t]+[^\r\n0-9+\-*@~ \t][^\r\n]*/,
 
     // =========================================================================
