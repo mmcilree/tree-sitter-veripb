@@ -40,6 +40,29 @@
  *
  * 7. ENUMERATION_COMPLETE / ENUMERATION_PARTIAL: New conclusion types from the overview,
  *    confirmed in test corpus.
+ *
+ * 8. VERSION 2.0 SUPPORT: VeriPB 2.0 proofs (legacy_format_overview.md) are dispatched
+ *    on the header. Source: `source_file` chooses between `proof` (v3) and `proof_v2`.
+ *    Notable v2 differences:
+ *      - Comments start with `*` (instead of `%`)
+ *      - `pol` may also be written `p`; `rup` as `u`; `soli` as `o`; `del id` as `d`;
+ *        (matched empirically against the corpus)
+ *      - Most rules are unterminated (no trailing `;` between proof lines)
+ *      - Substitution / subproof separator is `;` (instead of `:`)
+ *      - Subproof block keywords are `begin` ... `end` (instead of `subproof` ... `qed`)
+ *      - Proofgoals are closed by `end <id>` (the id is a constraint hint)
+ *      - Hints in `e`/`ea`/`i`/`ia`/`rup`/`u` follow a `;` (instead of `:`)
+ *      - Output / conclusion / end statements carry no trailing `;`
+ *      - Order definitions use `def_order` or `pre_order`; `vars`/`def`/`transitivity`
+ *        sub-blocks close with `end`, not `qed`
+ *      - Substitution arrows accept `->` and Unicode `→`
+ *
+ * 9. V2 COMMENT REGEX: `*` is the pol multiplication operator AND the v2 comment prefix.
+ *    We rely on the empirical observation (verified against the corpus) that `* ` (asterisk
+ *    + whitespace) is NEVER followed by a digit, `+`, `-`, `*`, `@`, or `~` in non-comment
+ *    contexts. The comment regex requires `*<ws><non-{digit/op/@/~}>` so the pol operator
+ *    cannot be misread. This is a heuristic — an external scanner would be more rigorous
+ *    but adds complexity; this regex parses every file in the v2 corpus correctly.
  */
 
 module.exports = grammar({
@@ -47,6 +70,7 @@ module.exports = grammar({
 
   extras: $ => [
     $.comment,
+    $.comment_v2,
     /[ \t\n\r]+/,
   ],
 
@@ -73,6 +97,48 @@ module.exports = grammar({
     [$.assignment, $.literal],
     // substitution (list of assignments) vs solution (list of literals) — resolved by context
     [$.substitution, $.solution],
+
+    // ---- v2 conflicts ----
+    // Optional constraint_ids on del/delc/deld/core could either continue the list
+    // (next token is a label/integer) or end the rule (a label starting the next
+    // proof line). GLR picks based on whether more proof rules follow.
+    [$.delc_rule_v2],
+    [$.deld_rule_v2],
+    [$.d_rule_v2],
+    [$.delete_type_v2],
+    [$.core_type_v2],
+    // sol/soli/solx solution lists end when the next rule starts.
+    [$.solution],
+    // assignment RHS '0'/'1' vs literal (same as v3 but for v2's substitution too)
+    [$.assignment_v2, $.literal],
+    // substitution_v2 list (each variable starts an assignment but variable could
+    // also be a literal continuing a parent context)
+    [$.substitution_v2],
+    [$.substitution_v2, $.solution],
+    // pol body has no trailing `;` in v2, so the parser must decide on every token
+    // whether it's still in the pol body or the next rule.
+    [$.pol_rule_v2],
+    // sol/soli/solx solution list runs until the next rule starts
+    [$.sol_rule_v2],
+    [$.soli_rule_v2],
+    [$.solx_rule_v2],
+    // constraint_ids: where the list ends depends on whether the next token starts
+    // a fresh proof line (a label) or extends the list (a constraint_id).
+    [$.constraint_ids],
+    // rup_rule_v2: after the trailing `;` the hint list may continue with constraint
+    // IDs/labels OR a new labelled proof line may begin.
+    [$.rup_rule_v2],
+    // Same pattern for e/ea/i/ia: optional trailing hint id vs new proof line.
+    [$.e_rule_v2],
+    [$.ea_rule_v2],
+    [$.i_rule_v2],
+    [$.ia_rule_v2],
+    // rup hint list ends when a label introduces the next rule.
+    [$.rup_hints_v2],
+    // subproof end_id is optional; the next token may be a constraint_id (continuing
+    // this subproof's closing line) or a label (starting a new proof line).
+    [$.subproof_v2],
+    [$.proofgoal_v2],
   ],
 
   rules: {
@@ -81,7 +147,9 @@ module.exports = grammar({
     // Top level
     // =========================================================================
 
-    source_file: $ => $.proof,
+    // The grammar dispatches on the header line: v3 proofs use the existing
+    // `proof` rule; v2 proofs use `proof_v2`.
+    source_file: $ => choice($.proof, $.proof_v2),
 
     proof: $ => seq(
       $.header,
@@ -91,7 +159,20 @@ module.exports = grammar({
 
     // The header line must not contain comments or newlines before its terminal
     // newline, so we capture it as a single opaque terminal (design decision 1).
-    header: $ => /pseudo-Boolean proof version [0-9]+\.[0-9]+[ \t]*(\r\n|\n|\r)/,
+    // Tightened to v3 only — v2 uses `header_v2` below.
+    header: $ => /pseudo-Boolean proof version 3\.[0-9]+[ \t]*(\r\n|\n|\r)/,
+
+    // =========================================================================
+    // VeriPB 2.0 top-level (see design decision 8)
+    // =========================================================================
+
+    proof_v2: $ => seq(
+      $.header_v2,
+      optional($.proof_lines_v2),
+      $.footer_v2,
+    ),
+
+    header_v2: $ => /pseudo-Boolean proof version 2\.[0-9]+[ \t]*(\r\n|\n|\r)/,
 
     // =========================================================================
     // Footer
@@ -753,6 +834,290 @@ module.exports = grammar({
     // =========================================================================
 
     comment: $ => /%[^\n\r]*/,
+
+    // v2 comment: '*' followed by whitespace and a non-operand character. The
+    // exclusion list (digit, sign, asterisk, label, tilde, AND whitespace) prevents
+    // collision with the pol multiplication operator (see design decision 9).
+    // Whitespace is excluded from the discriminator so that `*  -2 +` (pol body
+    // with extra spaces) cannot be misread as a comment. Verified safe against
+    // every file in the v2 and v3 corpora.
+    comment_v2: $ => /\*[ \t]+[^\r\n0-9+\-*@~ \t][^\r\n]*/,
+
+    // =========================================================================
+    // VeriPB 2.0 footer and proof body
+    // =========================================================================
+
+    footer_v2: $ => seq(
+      $.output_stmt_v2,
+      $.conclusion_stmt_v2,
+      $.end_stmt_v2,
+    ),
+
+    output_stmt_v2: $ => seq(
+      'output',
+      choice('NONE', seq($.output_guarantee, $.output_type)),
+    ),
+
+    conclusion_stmt_v2: $ => seq('conclusion', $.conclusion_type),
+
+    end_stmt_v2: $ => seq('end', 'pseudo-Boolean', 'proof'),
+
+    proof_lines_v2: $ => repeat1($.proof_line_v2),
+
+    // A v2 proof line is either an unlabelled rule, or a labelled rule (label
+    // followed by a label-able rule). No trailing `;` between lines.
+    proof_line_v2: $ => choice(
+      $.top_rule_v2,
+      seq($.label, $.labeled_rule_v2),
+    ),
+
+    labeled_rule_v2: $ => choice(
+      $.pol_rule_v2,
+      $.rup_rule_v2,
+      $.e_rule_v2,
+      $.ea_rule_v2,
+      $.i_rule_v2,
+      $.ia_rule_v2,
+      $.a_rule_v2,
+      $.red_rule_v2,
+      $.dom_rule_v2,
+      $.soli_rule_v2,
+      $.solx_rule_v2,
+    ),
+
+    top_rule_v2: $ => choice(
+      // output (label-able) rules
+      $.pol_rule_v2,
+      $.rup_rule_v2,
+      $.e_rule_v2,
+      $.ea_rule_v2,
+      $.i_rule_v2,
+      $.ia_rule_v2,
+      $.a_rule_v2,
+      $.red_rule_v2,
+      $.dom_rule_v2,
+      $.soli_rule_v2,
+      $.solx_rule_v2,
+      // non-output rules
+      $.del_rule_v2,
+      $.delc_rule_v2,
+      $.deld_rule_v2,
+      $.d_rule_v2,
+      $.obju_rule_v2,
+      $.load_order_rule_v2,
+      $.core_rule_v2,
+      $.setlvl_rule_v2,
+      $.wiplvl_rule_v2,
+      $.str_to_core_rule_v2,
+      $.sol_rule_v2,
+      $.def_order_rule_v2,
+      $.pre_order_rule_v2,
+      $.f_rule_v2,
+      $.eobj_rule_v2,
+      $.start_time_rule_v2,
+      $.end_time_rule_v2,
+      $.is_deleted_rule_v2,
+      $.fail_rule,
+    ),
+
+    // -------------------------------------------------------------------------
+    // v2 rules (most lack a trailing `;` per the legacy doc)
+    // -------------------------------------------------------------------------
+
+    // pol body shape is identical to v3 (same RPN operators).
+    pol_rule_v2: $ => seq(choice('pol', 'p'), repeat1($._pol_token)),
+
+    rup_rule_v2: $ => seq(
+      choice('rup', 'u'),
+      $.constraint,
+      ';',
+      optional($.rup_hints_v2),
+    ),
+
+    rup_hints_v2: $ => repeat1($.rup_hint_v2),
+    rup_hint_v2: $ => choice('~', $.constraint_id),
+
+    // del id <ids> [witness] | del spec/find <constraint> | del range <id> <id> [witness]
+    // The corpus shows `del id 2 ; ; begin ... end -1` (del with subproof) and
+    // `del find <constraint> ;` (undocumented alias for spec).
+    del_rule_v2: $ => seq(
+      'del',
+      $.delete_type_v2,
+      optional($.witness_args_v2),
+    ),
+    delete_type_v2: $ => choice(
+      seq('id',    optional($.constraint_ids)),
+      seq('spec',  $.constraint),
+      seq('find',  $.constraint),
+      seq('range', $.constraint_id, $.constraint_id),
+    ),
+    delc_rule_v2: $ => seq('delc', optional($.constraint_ids)),
+    deld_rule_v2: $ => seq('deld', optional($.constraint_ids)),
+
+    // `d <ids>` is an undocumented short form of `del id <ids>` used in v2 corpus.
+    d_rule_v2: $ => seq('d', optional($.constraint_ids)),
+
+    // Shared witness/subproof structure for v2: `; [<substitution>] [; [<subproof>]]`.
+    // Covers `red ... ;`, `red ... ; <subst>`, `red ... ; <subst> ; begin..end`,
+    // and the empty-substitution `red ... ; ; begin..end` form.
+    witness_args_v2: $ => seq(
+      ';',
+      optional($.substitution_v2),
+      optional(seq(';', optional($.subproof_v2))),
+    ),
+
+    red_rule_v2: $ => seq('red', $.constraint, $.witness_args_v2),
+    dom_rule_v2: $ => seq('dom', $.constraint, $.witness_args_v2),
+
+    // obju new|diff <objective> ; [; <subproof_v2>]?
+    // Per corpus: `obju new <obj> ; begin ... end`
+    obju_rule_v2: $ => seq(
+      'obju',
+      choice('new', 'diff'),
+      $.objective,
+      optional(';'),
+      optional(seq(';', $.subproof_v2)),
+      optional($.subproof_v2),
+    ),
+
+    // v2 `f` doc says one arg, but corpus has e.g. `f 73 0` (two args). Accept
+    // an optional second integer.
+    f_rule_v2:          $ => seq('f',          $.unsigned_integer, optional($.unsigned_integer)),
+    e_rule_v2:          $ => seq('e',          $.constraint, ';', optional($.constraint_id)),
+    ea_rule_v2:         $ => seq('ea',         $.constraint, ';', optional($.constraint_id)),
+    i_rule_v2:          $ => seq('i',          $.constraint, ';', optional($.constraint_id)),
+    ia_rule_v2:         $ => seq('ia',         $.constraint, ';', optional($.constraint_id)),
+    a_rule_v2:          $ => seq('a',          $.constraint, ';'),
+    is_deleted_rule_v2: $ => seq('is_deleted', $.constraint, ';'),
+    eobj_rule_v2:       $ => seq('eobj',       $.objective, ';'),
+
+    // sol/soli/solx/o — solution logging
+    sol_rule_v2:  $ => seq('sol',                $.solution),
+    soli_rule_v2: $ => seq(choice('soli', 'o'),  $.solution),
+    solx_rule_v2: $ => seq('solx',               $.solution),
+
+    // core id <ids> | core range <a> <b>
+    core_rule_v2: $ => seq('core', $.core_type_v2),
+    core_type_v2: $ => choice(
+      seq('id',    optional($.constraint_ids)),
+      seq('range', $.constraint_id, $.constraint_id),
+    ),
+
+    setlvl_rule_v2:      $ => seq('#', $.unsigned_integer),
+    wiplvl_rule_v2:      $ => seq('w', $.unsigned_integer),
+    str_to_core_rule_v2: $ => seq('strengthening_to_core', choice('on', 'off')),
+
+    load_order_rule_v2: $ => seq(
+      'load_order',
+      optional(seq(field('name', $.identifier), optional($.literals))),
+    ),
+
+    start_time_rule_v2: $ => seq('start_time', field('name', $.identifier)),
+    end_time_rule_v2:   $ => seq('end_time',   field('name', $.identifier)),
+
+    // -------------------------------------------------------------------------
+    // v2 order definitions
+    // `def_order <name> ... end` and `pre_order <name> ... end` use the same
+    // body structure. Sub-blocks (`vars`, `def`, `transitivity`, `proof`,
+    // `reflexivity`, `proofgoal`) close with `end` (not `qed`).
+    // -------------------------------------------------------------------------
+
+    def_order_rule_v2: $ => seq('def_order', $.order_body_v2),
+    pre_order_rule_v2: $ => seq('pre_order', $.order_body_v2),
+
+    order_body_v2: $ => seq(
+      field('name', $.identifier),
+      $.order_vars_v2,
+      $.order_def_v2,
+      optional($.order_transitivity_v2),
+      optional($.order_reflexivity_v2),
+      'end',
+    ),
+
+    order_vars_v2: $ => seq(
+      'vars',
+      'left',  optional($.variables),
+      'right', optional($.variables),
+      optional(seq('aux', optional($.aux_variables))),
+      'end',
+    ),
+
+    order_def_v2: $ => seq(
+      'def',
+      optional($.constraint_lines),
+      'end',
+    ),
+
+    order_transitivity_v2: $ => seq(
+      'transitivity',
+      $.order_transitivity_vars_v2,
+      $.order_proof_v2,
+      'end',
+    ),
+
+    order_transitivity_vars_v2: $ => seq(
+      'vars',
+      'fresh_right', optional($.variables),
+      optional(seq('fresh_aux_1', optional($.aux_variables))),
+      optional(seq('fresh_aux_2', optional($.aux_variables))),
+      'end',
+    ),
+
+    order_reflexivity_v2: $ => seq(
+      'reflexivity',
+      $.order_proof_v2,
+      'end',
+    ),
+
+    order_proof_v2: $ => seq(
+      'proof',
+      optional($.subproof_lines_v2),
+      'end',
+    ),
+
+    // -------------------------------------------------------------------------
+    // v2 substitution: variable [-> | →] (0 | 1 | literal)
+    // -------------------------------------------------------------------------
+
+    substitution_v2: $ => repeat1($.assignment_v2),
+
+    assignment_v2: $ => seq(
+      choice($.identifier, $.aux_variable),
+      optional(choice('->', '→')),
+      choice('0', '1', $.literal),
+    ),
+
+    // -------------------------------------------------------------------------
+    // v2 subproofs and proofgoals
+    //
+    // Both subproof and proofgoal bodies may contain inline rules (without a
+    // wrapping `proofgoal`). They close with `end` optionally followed by a
+    // constraint-id hint, e.g. `end -1` or `end 13`. Subproofs nest — a `red`
+    // inside a subproof carries its own `; begin ... end` block.
+    // -------------------------------------------------------------------------
+
+    subproof_v2: $ => seq(
+      'begin',
+      optional($.subproof_lines_v2),
+      'end',
+      optional(field('end_id', $.constraint_id)),
+      // Some corpus files use `end -1 ;` (stray trailing `;` after the subproof).
+      optional(';'),
+    ),
+
+    subproof_lines_v2: $ => repeat1(choice(
+      $.proofgoal_v2,
+      $.proof_line_v2,
+    )),
+
+    proofgoal_v2: $ => seq(
+      'proofgoal',
+      field('id', $.proofgoal_id),
+      optional(repeat1($.proof_line_v2)),
+      'end',
+      optional(field('end_id', $.constraint_id)),
+      optional(';'),
+    ),
 
   },
 });

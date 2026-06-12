@@ -1,0 +1,218 @@
+================================================================================
+v2 — empty proof
+================================================================================
+
+pseudo-Boolean proof version 2.0
+f 1
+output NONE
+conclusion NONE
+end pseudo-Boolean proof
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (proof_v2
+    (header_v2)
+    (proof_lines_v2
+      (proof_line_v2
+        (top_rule_v2
+          (f_rule_v2
+            (unsigned_integer)))))
+    (footer_v2
+      (output_stmt_v2)
+      (conclusion_stmt_v2
+        (conclusion_type))
+      (end_stmt_v2))))
+
+================================================================================
+v2 — pol short form `p`
+================================================================================
+
+pseudo-Boolean proof version 2.0
+f 2
+p 1 2 +
+output NONE
+conclusion NONE
+end pseudo-Boolean proof
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (proof_v2
+    (header_v2)
+    (proof_lines_v2
+      (proof_line_v2
+        (top_rule_v2
+          (f_rule_v2 (unsigned_integer))))
+      (proof_line_v2
+        (top_rule_v2
+          (pol_rule_v2
+            (constraint_id (positive_integer))
+            (constraint_id (positive_integer))))))
+    (footer_v2
+      (output_stmt_v2)
+      (conclusion_stmt_v2 (conclusion_type))
+      (end_stmt_v2))))
+
+================================================================================
+v2 — rup short form `u` with hint
+================================================================================
+
+pseudo-Boolean proof version 2.0
+f 1
+u >= 1 ; -1
+output NONE
+conclusion UNSAT : -1
+end pseudo-Boolean proof
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (proof_v2
+    (header_v2)
+    (proof_lines_v2
+      (proof_line_v2
+        (top_rule_v2
+          (f_rule_v2 (unsigned_integer))))
+      (proof_line_v2
+        (top_rule_v2
+          (rup_rule_v2
+            (constraint (relational_operator) (coefficient (signed_integer)))
+            (rup_hints_v2
+              (rup_hint_v2 (constraint_id)))))))
+    (footer_v2
+      (output_stmt_v2)
+      (conclusion_stmt_v2
+        (conclusion_type (constraint_id)))
+      (end_stmt_v2))))
+
+================================================================================
+v2 — `*` comment
+================================================================================
+
+pseudo-Boolean proof version 2.0
+* a comment on its own
+f 1
+output NONE
+conclusion NONE
+end pseudo-Boolean proof
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (proof_v2
+    (header_v2)
+    (comment_v2)
+    (proof_lines_v2
+      (proof_line_v2
+        (top_rule_v2
+          (f_rule_v2 (unsigned_integer)))))
+    (footer_v2
+      (output_stmt_v2)
+      (conclusion_stmt_v2 (conclusion_type))
+      (end_stmt_v2))))
+
+================================================================================
+v2 — red with empty substitution and subproof
+================================================================================
+
+pseudo-Boolean proof version 2.0
+red 1 x1 >= 1 ; ; begin
+pol -1 -2 +
+end -1
+output NONE
+conclusion NONE
+end pseudo-Boolean proof
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (proof_v2
+    (header_v2)
+    (proof_lines_v2
+      (proof_line_v2
+        (top_rule_v2
+          (red_rule_v2
+            (constraint
+              (sum
+                (weighted_term (coefficient (signed_integer)) (literal (identifier))))
+              (relational_operator)
+              (coefficient (signed_integer)))
+            (witness_args_v2
+              (subproof_v2
+                (subproof_lines_v2
+                  (proof_line_v2
+                    (top_rule_v2
+                      (pol_rule_v2
+                        (constraint_id)
+                        (constraint_id))))) (constraint_id)))))))
+    (footer_v2
+      (output_stmt_v2)
+      (conclusion_stmt_v2 (conclusion_type))
+      (end_stmt_v2))))
+
+================================================================================
+v2 — red with substitution using Unicode arrow
+================================================================================
+
+pseudo-Boolean proof version 2.0
+red 1 a3 1 a4 >= 1 ; a1 → a2 a3 → 0
+output NONE
+conclusion NONE
+end pseudo-Boolean proof
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (proof_v2
+    (header_v2)
+    (proof_lines_v2
+      (proof_line_v2
+        (top_rule_v2
+          (red_rule_v2
+            (constraint
+              (sum
+                (weighted_term (coefficient (signed_integer)) (literal (identifier)))
+                (weighted_term (coefficient (signed_integer)) (literal (identifier))))
+              (relational_operator)
+              (coefficient (signed_integer)))
+            (witness_args_v2
+              (substitution_v2
+                (assignment_v2 (identifier) (literal (identifier)))
+                (assignment_v2 (identifier))))))))
+    (footer_v2
+      (output_stmt_v2)
+      (conclusion_stmt_v2 (conclusion_type))
+      (end_stmt_v2))))
+
+================================================================================
+v2 — conclusion BOUNDS with both hints
+================================================================================
+
+pseudo-Boolean proof version 2.0
+f 3
+output NONE
+conclusion BOUNDS 2 : 4 2 : x1 ~x2 ~x3
+end pseudo-Boolean proof
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (proof_v2
+    (header_v2)
+    (proof_lines_v2
+      (proof_line_v2
+        (top_rule_v2 (f_rule_v2 (unsigned_integer)))))
+    (footer_v2
+      (output_stmt_v2)
+      (conclusion_stmt_v2
+        (conclusion_type
+          (bound (signed_integer))
+          (constraint_id (positive_integer))
+          (bound (signed_integer))
+          (solution
+            (literals
+              (literal (identifier))
+              (literal (identifier))
+              (literal (identifier))))))
+      (end_stmt_v2))))
