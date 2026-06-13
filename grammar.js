@@ -57,38 +57,43 @@
  *        sub-blocks close with `end`, not `qed`
  *      - Substitution arrows accept `->` and Unicode `→`
  *
- * 9. V2 COMMENT — INTENT VS IMPLEMENTATION: v2 comments are line comments —
- *    only a `*` that is the first non-whitespace character on a line should be
- *    a comment; a `*` mid-line is the pol multiplication operator.
+ * 9. STRICT LINE COMMENT FOR V2, VIA EXTERNAL SCANNER: v2 comments and the
+ *    pol multiplication operator both spell themselves with `*`. Disambiguation
+ *    is purely positional — a `*` that is the first non-whitespace character on
+ *    its line is a comment; a `*` mid-line is the operator. Pol bodies
+ *    legitimately contain forms like `p 1 2 * x10 +` (where `*` is followed by
+ *    a literal identifier), so no character-class regex can tell them apart.
  *
- *    The ideal implementation is an external scanner that checks the lexer's
- *    column position. We tried this (src/scanner.c) and the scanner logic
- *    itself is correct, but tree-sitter 0.24's interaction between extras and
- *    externals at EOF caused every file with a trailing newline to error.
+ *    Tree-sitter regex has no line anchor, so both tokens come from an external
+ *    scanner (src/scanner.c). The scanner produces:
+ *      - `comment_v2` when the upcoming `*` is the first non-ws char on its
+ *        line (i.e. the scanner crossed a newline through whitespace to reach
+ *        it). Consumes the rest of the line.
+ *      - `pol_star_op` when the upcoming `*` is mid-line. Consumes the byte.
  *
- *    The fallback used here is a regex whose character class is designed to
- *    only fire on real comment lines:
- *
- *        \*[ \t]+[^\r\n0-9+\-*@~ \t][^\r\n]*
- *
- *    `*`, mandatory whitespace, then *exactly one* character that is not a
- *    digit, sign, asterisk, label, tilde, or whitespace. In a pol body, the
- *    character after `<int> *` is always one of those excluded categories
- *    (next operand, next operator, or further whitespace), so the regex can't
- *    lock onto a multiplication site. Every comment in the v2 + v3 corpora
- *    starts with a letter or `(`, both of which the class admits.
- *
- *    Caveat: a hand-crafted line containing mid-line `* <letter>...` would
- *    misparse as a comment. In the corpora that never happens — but the
- *    user's intent ("strict line comment") is approximated, not enforced.
+ *    The bare `*` is intentionally NOT a regular lexer token — all pol-context
+ *    uses in the grammar reference `$.pol_star_op` rather than the literal
+ *    string `'*'`. The scanner is invoked either with `*` directly as the
+ *    lookahead, or at whitespace that precedes a `*` (the latter is needed
+ *    because tree-sitter does not always re-consult the scanner after the
+ *    whitespace extra has advanced).
  */
 
 module.exports = grammar({
   name: 'veripb',
 
-  extras: $ => [
-    $.comment,
+  // Both `comment_v2` and `pol_star_op` are matched by the external scanner
+  // (src/scanner.c) — bare `*` is intentionally not a regular lexer token.
+  // The scanner disambiguates on column: `*` at column 0 is a comment, `*`
+  // mid-line is the pol multiplication operator. See design decision 9.
+  externals: $ => [
     $.comment_v2,
+    $.pol_star_op,
+  ],
+
+  extras: $ => [
+    $.comment_v2,
+    $.comment,
     /[ \t\n\r]+/,
   ],
 
@@ -325,7 +330,7 @@ module.exports = grammar({
 
     _pol_token: $ => choice(
       $._pol_int_op,    // <positive_integer> <op>  e.g. `3 *`
-      seq('0', choice('*', '-', 'c', 'd', 'm', 'n')),  // 0 is valid operand (e.g. 0 *)
+      seq('0', choice($.pol_star_op, '-', 'c', 'd', 'm', 'n')),  // 0 is valid operand (e.g. 0 *)
       $.constraint_id,  // integer ID or @label
       $.literal,        // variable or ~variable (literal axiom push)
       '+',              // binary add
@@ -334,10 +339,11 @@ module.exports = grammar({
     ),
 
     // Represents the two-token form `<positive_integer> <binary_op>` where
-    // positive_integer is the operand (not a stack push).
+    // positive_integer is the operand (not a stack push). The `*` operand is
+    // a `pol_star_op` external token (see design decision 9).
     _pol_int_op: $ => seq(
       $.positive_integer,
-      choice('*', '-', 'c', 'd', 'm', 'n'),
+      choice($.pol_star_op, '-', 'c', 'd', 'm', 'n'),
     ),
 
     // =========================================================================
@@ -853,16 +859,12 @@ module.exports = grammar({
 
     comment: $ => /%[^\n\r]*/,
 
-    // v2 comment: a `*`, then mandatory whitespace, then a character that is
-    // *not* a digit, sign, asterisk, label, tilde, or whitespace. The exclusion
-    // class is what makes this approximate the user's intended "only at the
-    // start of a line" rule: every character that legally follows a pol-body
-    // `*` (operands, operators, more whitespace) is excluded, so the regex
-    // cannot lock onto a multiplication site. Every v2 corpus comment begins
-    // with a letter or `(`, both of which the class admits. See design
-    // decision 9 for why an external scanner — the ideal solution — proved
-    // infeasible under tree-sitter 0.24's extras-at-EOF behaviour.
-    comment_v2: $ => /\*[ \t]+[^\r\n0-9+\-*@~ \t][^\r\n]*/,
+    // Regex bodies provide the `*` starting-character hint so tree-sitter
+    // calls the external scanner. The scanner consumes more characters (a
+    // full line for comment_v2), so its match wins over these single-char
+    // regex matches by longest-match.
+    // comment_v2 and pol_star_op have no grammar rule body — they are
+    // produced exclusively by the external scanner. See design decision 9.
 
     // =========================================================================
     // VeriPB 2.0 footer and proof body

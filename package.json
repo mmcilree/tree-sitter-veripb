@@ -14,7 +14,7 @@
     "node-gyp-build": "^4.8.0"
   },
   "devDependencies": {
-    "tree-sitter-cli": "^0.24.0"
+    "tree-sitter-cli": "^0.26.9"
   },
   "scripts": {
     "build": "tree-sitter generate && node-gyp build",
@@ -23,13 +23,17 @@
   "tree-sitter": [
     {
       "scope": "source.veripb",
-      "file-types": ["pbp"],
+      "file-types": [
+        "pbp"
+      ],
       "highlights": "queries/highlights.scm"
     },
     {
       "scope": "source.opb",
       "path": "opb",
-      "file-types": ["opb"],
+      "file-types": [
+        "opb"
+      ],
       "highlights": "opb/queries/highlights.scm"
     }
   ]

@@ -151,7 +151,6 @@
 [
   "+"
   "-"
-  "*"
   "c"
   "d"
   "m"
@@ -159,6 +158,9 @@
   "s"
   "w"
 ] @operator
+
+; pol multiplication operator (external token, not a bare "*")
+(pol_star_op) @operator
 
 ; Substitution arrow (v3 uses `->`, v2 also accepts Unicode `→`)
 [

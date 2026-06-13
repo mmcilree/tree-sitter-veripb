@@ -702,8 +702,8 @@
               "type": "CHOICE",
               "members": [
                 {
-                  "type": "STRING",
-                  "value": "*"
+                  "type": "SYMBOL",
+                  "name": "pol_star_op"
                 },
                 {
                   "type": "STRING",
@@ -762,8 +762,8 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "STRING",
-              "value": "*"
+              "type": "SYMBOL",
+              "name": "pol_star_op"
             },
             {
               "type": "STRING",
@@ -3210,10 +3210,6 @@
       "type": "PATTERN",
       "value": "%[^\\n\\r]*"
     },
-    "comment_v2": {
-      "type": "PATTERN",
-      "value": "\\*[ \\t]+[^\\r\\n0-9+\\-*@~ \\t][^\\r\\n]*"
-    },
     "footer_v2": {
       "type": "SEQ",
       "members": [
@@ -4834,11 +4830,11 @@
   "extras": [
     {
       "type": "SYMBOL",
-      "name": "comment"
+      "name": "comment_v2"
     },
     {
       "type": "SYMBOL",
-      "name": "comment_v2"
+      "name": "comment"
     },
     {
       "type": "PATTERN",
@@ -4948,7 +4944,17 @@
     ]
   ],
   "precedences": [],
-  "externals": [],
+  "externals": [
+    {
+      "type": "SYMBOL",
+      "name": "comment_v2"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "pol_star_op"
+    }
+  ],
   "inline": [],
-  "supertypes": []
+  "supertypes": [],
+  "reserved": {}
 }

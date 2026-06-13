@@ -1643,6 +1643,10 @@
           "named": true
         },
         {
+          "type": "pol_star_op",
+          "named": true
+        },
+        {
           "type": "positive_integer",
           "named": true
         }
@@ -1663,6 +1667,10 @@
         },
         {
           "type": "literal",
+          "named": true
+        },
+        {
+          "type": "pol_star_op",
           "named": true
         },
         {
@@ -3173,10 +3181,6 @@
     "named": false
   },
   {
-    "type": "*",
-    "named": false
-  },
-  {
     "type": "+",
     "named": false
   },
@@ -3298,11 +3302,13 @@
   },
   {
     "type": "comment",
-    "named": true
+    "named": true,
+    "extra": true
   },
   {
     "type": "comment_v2",
-    "named": true
+    "named": true,
+    "extra": true
   },
   {
     "type": "conclusion",
@@ -3495,6 +3501,10 @@
   {
     "type": "pol",
     "named": false
+  },
+  {
+    "type": "pol_star_op",
+    "named": true
   },
   {
     "type": "positive_integer",

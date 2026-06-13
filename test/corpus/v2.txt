@@ -136,8 +136,41 @@ end pseudo-Boolean proof
           (pol_rule_v2
             (constraint_id (positive_integer))
             (positive_integer)
+            (pol_star_op)
             (constraint_id (positive_integer))
-            (positive_integer)))))
+            (positive_integer)
+            (pol_star_op)))))
+    (footer_v2
+      (output_stmt_v2)
+      (conclusion_stmt_v2 (conclusion_type))
+      (end_stmt_v2))))
+
+================================================================================
+v2 — `*` followed by an identifier in a pol body (not a comment)
+================================================================================
+
+pseudo-Boolean proof version 2.0
+f 2
+p 1 2 * x10 +
+output NONE
+conclusion NONE
+end pseudo-Boolean proof
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (proof_v2
+    (header_v2)
+    (proof_lines_v2
+      (proof_line_v2
+        (top_rule_v2 (f_rule_v2 (unsigned_integer))))
+      (proof_line_v2
+        (top_rule_v2
+          (pol_rule_v2
+            (constraint_id (positive_integer))
+            (positive_integer)
+            (pol_star_op)
+            (literal (identifier))))))
     (footer_v2
       (output_stmt_v2)
       (conclusion_stmt_v2 (conclusion_type))
